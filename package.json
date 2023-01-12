@@ -1,0 +1,68 @@
+{
+  "version": "0.1.0",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "bin": {
+    "cli": "./dist/cli.js"
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "engines": {
+    "node": ">=10"
+  },
+  "scripts": {
+    "start": "ts-node --esm ./src/index.ts -srcf asdasdasdasd -tsc tsconfigPath -t template",
+    "build": "tsup",
+    "test": "tsdx test",
+    "lint": "tsdx lint",
+    "size": "size-limit",
+    "analyze": "size-limit --why"
+  },
+  "peerDependencies": {},
+  "husky": {
+    "hooks": {
+      "pre-commit": "tsdx lint"
+    }
+  },
+  "prettier": {
+    "printWidth": 80,
+    "semi": true,
+    "singleQuote": true,
+    "trailingComma": "es5"
+  },
+  "name": "storybook-generator",
+  "author": "Boaz Hoch",
+  "module": "dist/storybook-generator.esm.js",
+  "size-limit": [
+    {
+      "path": "dist/storybook-generator.cjs.production.min.js",
+      "limit": "10 KB"
+    },
+    {
+      "path": "dist/storybook-generator.esm.js",
+      "limit": "10 KB"
+    }
+  ],
+  "devDependencies": {
+    "@size-limit/preset-small-lib": "^8.1.0",
+    "@tsconfig/node16": "^1.0.3",
+    "@tsconfig/recommended": "^1.0.1",
+    "@types/uuid": "^9.0.0",
+    "husky": "^8.0.3",
+    "size-limit": "^8.1.0",
+    "tsdx": "^0.14.1",
+    "tslib": "^2.4.1",
+    "tsup": "^6.5.0",
+    "typescript": "^4.9.4"
+  },
+  "dependencies": {
+    "commander": "^9.5.0",
+    "inversify": "5.0.5",
+    "reflect-metadata": "^0.1.13",
+    "ts-morph": "^17.0.1",
+    "uuid": "^9.0.0"
+  }
+}
