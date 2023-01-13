@@ -1,17 +1,14 @@
 import { Command, Option, program as commanderProgram } from "commander";
 
-import { StoriesBuilderAdapter } from "../../story/interface";
-import { StoriesBuildConfiguration } from "../../story/storiesBuildConfig.dto";
+import { IStoriesBuilderAdapter } from "../../usecases/storiesBuilderAdapter";
+import { StoriesConfigRequestModel } from "../../usecases/stories.usecase";
+
 
 interface Options {
     srcf?: string;
     tsc?: string;
     t?: string;
-    srcfolder?: string;
-    tsconfig?: string;
-    template?: string;
     ex?: string;
-    excludefiles?: string;
 }
 
 const CLI_OPTIONS_STRINGS: {[index: string]: keyof Options} = {
@@ -21,29 +18,27 @@ const CLI_OPTIONS_STRINGS: {[index: string]: keyof Options} = {
     excludeFiles: "ex"
 }
 
-const optionsMap = new Map<string, Readonly<keyof Options>>([
-    [CLI_OPTIONS_STRINGS.srcComponentsGlob, "srcfolder"],
-    [CLI_OPTIONS_STRINGS.tsconfigFilePath, "tsconfig"],
-    [CLI_OPTIONS_STRINGS.template, "template"],
-    [CLI_OPTIONS_STRINGS.excludeFiles, "excludefiles"]
-])
-
-export class CliAdapter implements StoriesBuilderAdapter {
+export class CliAdapter implements IStoriesBuilderAdapter {
     constructor(private program: Command = commanderProgram) {
         Object.values(CLI_OPTIONS_STRINGS).forEach((value) => {
             this.program
-                .addOption(new Option(`${value} <type>`, `${optionsMap.get(value)} <type>`))
+                .addOption(new Option(`-${value} <type>`, `${CLI_OPTIONS_STRINGS[value]} <type>`))
         })
     }
 
-    parse(): StoriesBuildConfiguration {
+    parse(): StoriesConfigRequestModel {
         this.program.parse();
         const options = this.program.opts<Options>();
+
+        const opts = Object.keys(options).reduce((prevValue, currentValue) => {
+            return {...prevValue, [currentValue.toLocaleLowerCase()]: options[currentValue as keyof typeof options]}
+        }, {} as Options)
+
         return {
-            componentsSrcFilePath: options[optionsMap.get(CLI_OPTIONS_STRINGS.srcComponentsGlob) || CLI_OPTIONS_STRINGS.srcComponentsGlob] || "",
-            tsconfigFilePath: options[optionsMap.get(CLI_OPTIONS_STRINGS.tsconfigFilePath) || CLI_OPTIONS_STRINGS.tsconfigFilePath] || "",
-            excludedSrcFileGlob: options[optionsMap.get(CLI_OPTIONS_STRINGS.excludeFiles) || CLI_OPTIONS_STRINGS.excludeFiles] || "",
-            template: options[optionsMap.get(CLI_OPTIONS_STRINGS.temaplte) || CLI_OPTIONS_STRINGS.temaplte] || "",
+            componentsSrcFilePath: opts[CLI_OPTIONS_STRINGS.srcComponentsGlob] || "",
+            tsconfigFilePath: opts[CLI_OPTIONS_STRINGS.tsconfigFilePath] || "",
+            template: opts[CLI_OPTIONS_STRINGS.temaplte] || "",
+            excludedSrcFileGlob: opts[CLI_OPTIONS_STRINGS.excludeFiles],
         }
     }
 }

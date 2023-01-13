@@ -1,2 +1,2 @@
 export * from "./cli.adapter"
-export * from "../../story/interface"
+export * from "../../usecases/storiesBuilderAdapter"

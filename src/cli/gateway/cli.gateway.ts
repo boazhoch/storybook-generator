@@ -1,17 +1,26 @@
-import { TypescriptAstProject } from './../../story/AstProject';
 
-import { StoriesbuilderController, StoryController } from "../../story/story.controller";
-import { StoriesUseCase } from "../../story/story.usecase";
+import { StoriesBuilderController } from "../../interface-adapters/storiesBuilder.controller";
+import { StoriesUseCase } from "../../usecases/stories.usecase";
 import { CliAdapter } from "../adapter";
-import { FSWriter } from '../../story/Writer';
+import { FileSystemRepo } from '../../frameworks-drivers/file-system/FileSystemRepo';
+import { TypescriptAstProjectService } from "../../services/ts";
+import { TSAstProjectLoader } from "../../services/ts/ITSAstPrjectLoader";
+import { ComponentStoryFileFactory } from "../../services/ts/IComponentStoryFileFactory";
+import { StoryTemplate } from "../../services/storyTemplateGenerator";
+import { StoriesBuilderPresenter } from "../../interface-adapters/stories.presenter";
 
 
 export class CliGateway {
-    controller: StoriesbuilderController;
+    controller: StoriesBuilderController;
     constructor() {
-        this.controller = new StoryController(new CliAdapter(), new StoriesUseCase(new StoriesBuilderPreseter(), new TypescriptAstProject(new FSWriter())));
+        const cliApdater = new CliAdapter();
+        const ast = new TypescriptAstProjectService(new TSAstProjectLoader(), new ComponentStoryFileFactory(new StoryTemplate()));
+        const useCause = new StoriesUseCase(new StoriesBuilderPresenter(), ast, new FileSystemRepo());
+
+        this.controller = new StoriesBuilderController(cliApdater, useCause);
     }
     run() {
+        this.controller.parseConfig();
         this.controller.run();
     }
 }
