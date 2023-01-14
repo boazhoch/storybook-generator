@@ -4,7 +4,7 @@
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "bin": {
-    "cli": "./dist/cli.js"
+    "story-generator": "./dist/index.js"
   },
   "files": [
     "dist",
