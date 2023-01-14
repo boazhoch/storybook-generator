@@ -25,3 +25,6 @@ A quick stories file generator, it will create a story for each component.
 * Correlate exports from a component file to a story. (If you wrote many components in one file and named exported them)
 * Testing
 * Better documentino
+
+
+
