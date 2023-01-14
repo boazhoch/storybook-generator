@@ -1,4 +1,4 @@
-name: DOCS
+name: CI
 on: [push]
 jobs:
   build:
@@ -6,7 +6,7 @@ jobs:
     
     strategy:
       matrix:
-        node: ['10.x', '12.x', '14.x']
+        node: ["14", "16", "18"]
         os: [ubuntu-latest, windows-latest, macOS-latest]
 
     steps:
