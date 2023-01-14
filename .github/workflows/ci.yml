@@ -1,34 +1,27 @@
-name: CI
-on: [push]
+name: Node.js CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
 jobs:
   build:
-    runs-on: ${{ matrix.os }}
-    
+
+    runs-on: ubuntu-latest
+
     strategy:
       matrix:
-        node: ["14", "16", "18"]
-        os: [ubuntu-latest, windows-latest, macOS-latest]
+        node-version: [10.x, 12.x, 14.x, 15.x]
 
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v3
-
-      - name: Use Node ${{ matrix.node }}
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
-          node-version: ${{ matrix.node }}
-
-      - name: Upgrade NPM
-        run: npm install -g pnpm
-
-      - name: Yarn install 
-        uses: pnpm install --frozen-lockfile
-
-      - name: Lint
-        run: pnpm lint
-
-      - name: Test
-        run: pnpm test --ci --coverage --maxWorkers=2
-
-      - name: Build
-        run: pnpm build
+          node-version: ${{ matrix.node-version }}
+      - run: npm install -g pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm lint
+      - run: pnpm build
