@@ -1,4 +1,6 @@
+import { inject, injectable, optional } from 'inversify';
 import { StoriesResponseModel } from '../usecases/stories.usecase';
+import "reflect-metadata";
 
 interface StoriesResponseModelWithTemplate extends Omit<StoriesResponseModel, "template"> {}
 
@@ -6,11 +8,13 @@ interface StoriesResponseModelWithTemplate extends Omit<StoriesResponseModel, "t
 export interface IStoryTemplateGenerator {
   generate(storyFileDto: StoriesResponseModelWithTemplate): string;
 }
+
+@injectable()
 export class StoryTemplate implements IStoryTemplateGenerator {
   /**
    *
    */
-  constructor(private templatebuilder?: (storyFileDto: StoriesResponseModelWithTemplate) => string) {
+  constructor(@inject("template") @optional() private templatebuilder?: (storyFileDto: StoriesResponseModelWithTemplate) => string) {
   }
 
   public generate(storyFileDto: StoriesResponseModelWithTemplate) {

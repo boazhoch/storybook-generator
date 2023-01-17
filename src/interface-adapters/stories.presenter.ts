@@ -1,5 +1,9 @@
+import { injectable } from 'inversify';
 import { StoryFileDto } from './../services/ts/IComponentStoryFileFactory';
 import { StoriesReponsePresenter } from "../usecases/stories.usecase";
+import "reflect-metadata";
+
+@injectable()
 export class StoriesBuilderPresenter implements StoriesReponsePresenter {
     presentAll(models: StoryFileDto[]) {
         const filesCreated = models.map((storyFile) => ({ fileName: storyFile.name, path: storyFile.srcFilePath }));

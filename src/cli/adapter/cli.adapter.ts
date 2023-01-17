@@ -2,6 +2,8 @@ import { Command, Option, program as commanderProgram } from "commander";
 
 import { IStoriesBuilderAdapter } from "../../usecases/storiesBuilderAdapter";
 import { StoriesConfigRequestModel } from "../../usecases/stories.usecase";
+import { injectable } from "inversify";
+import "reflect-metadata";
 
 
 interface Options {
@@ -18,6 +20,7 @@ const CLI_OPTIONS_STRINGS: {[index: string]: keyof Options} = {
     excludeFiles: "ex"
 }
 
+@injectable()
 export class CliAdapter implements IStoriesBuilderAdapter {
     constructor(private program: Command = commanderProgram) {
         Object.values(CLI_OPTIONS_STRINGS).forEach((value) => {

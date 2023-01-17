@@ -1,5 +1,7 @@
+import { inject, injectable } from 'inversify';
 import { ExportedDeclarations, SourceFile, Node } from "ts-morph";
 import { IStoryTemplateGenerator } from "../storyTemplateGenerator";
+import "reflect-metadata";
 
 export interface StoryFileDto {
     name: string;
@@ -14,8 +16,10 @@ export interface IComponentStoryFileFactory {
     create(srcFile: SourceFile): StoryFileDto | undefined;
 }
 
+
+@injectable()
 export class ComponentStoryFileFactory implements IComponentStoryFileFactory {
-    constructor(private tempalteFileGenerator: IStoryTemplateGenerator) {}
+    constructor(@inject("tempalteFileGenerator") private tempalteFileGenerator: IStoryTemplateGenerator) {}
 
     create(
         srcFile: SourceFile

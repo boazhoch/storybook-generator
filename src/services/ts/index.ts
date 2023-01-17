@@ -2,17 +2,25 @@ import { IComponentStoryFileFactory, StoryFileDto } from './IComponentStoryFileF
 import { SourceFile, } from "ts-morph";
 import { ITSAstProjectLoader } from './ITSAstPrjectLoader';
 import { StoriesConfigRequestModel } from '../../usecases/stories.usecase';
+import "reflect-metadata";
+import { inject, injectable } from 'inversify';
 
 export interface IAstProjectService {
   loadAstFromConfig(config: StoriesConfigRequestModel): IAstProjectService
   createStories(): StoryFileDto[];
 }
 
+
+@injectable()
 export class TypescriptAstProjectService implements IAstProjectService {
   private srcFiles?: SourceFile[];
   
-  constructor(private loader: ITSAstProjectLoader, private componentStoryFileFactory: IComponentStoryFileFactory) {
-  }
+  constructor(
+    @inject("loader") private loader: ITSAstProjectLoader,
+    @inject("componentFactory") private componentStoryFileFactory: IComponentStoryFileFactory
+    ) {
+      
+    }
 
   loadAstFromConfig(config: StoriesConfigRequestModel) {
     this.srcFiles = this.loader.loadAstFromConfig(config);
