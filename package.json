@@ -14,10 +14,8 @@
     "node": ">=10"
   },
   "scripts": {
-    "start": "ts-node --esm ./src/index.ts -srcf ./mylib/src/**/*.tsx -tsc ./mylib/tsconfig.json",
+    "start": "ts-node --esm",
     "build": "tsup",
-    "test": "tsdx test",
-    "lint": "tsdx lint",
     "size": "size-limit",
     "analyze": "size-limit --why",
     "doc": "typedoc"
