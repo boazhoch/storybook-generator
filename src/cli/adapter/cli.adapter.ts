@@ -18,11 +18,18 @@ const CLI_OPTIONS_STRINGS: {[index: string]: keyof Options} = {
     excludeFiles: "ex"
 }
 
+const CLI_OPTIONS_STRINGS_DESC: {[k in keyof typeof CLI_OPTIONS_STRINGS]: string} = {
+    srcComponentsGlob: "components source folder path",
+    tsconfigFilePath: "tsconfig.json file path",
+    template: "template",
+    excludeFiles: "exclude files glob"
+}
+
 export class CliAdapter implements IStoriesBuilderAdapter {
     constructor(private program: Command = commanderProgram) {
-        Object.values(CLI_OPTIONS_STRINGS).forEach((value) => {
+        Object.entries(CLI_OPTIONS_STRINGS).forEach(([key,value]) => {
             this.program
-                .addOption(new Option(`-${value} <type>`, `${CLI_OPTIONS_STRINGS[value]} <type>`))
+                .addOption(new Option(`-${value} <string>`, `${CLI_OPTIONS_STRINGS_DESC[key]}`))
         })
     }
 
