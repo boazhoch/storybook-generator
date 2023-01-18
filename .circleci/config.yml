@@ -6,29 +6,29 @@ defaults: &defaults
     - image: circleci/node
 
 jobs:
-  # test:
-  #   <<: *defaults  
-  #   steps:
-  #     - checkout
+  test:
+    <<: *defaults  
+    steps:
+      - checkout
 
-  #     - restore_cache:
-  #         keys:
-  #         - v1-dependencies-{{ checksum "package.json" }}
-  #         - v1-dependencies-
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "package.json" }}
+          - v1-dependencies-
 
-  #     - run: npm install -g pnpm
-  #     - run:
-  #         name: Run tests
-  #         command: pnpm run test
+      - run: npm install -g pnpm
+      - run:
+          name: Run tests
+          command: pnpm run test
 
-  #     - save_cache:
-  #         paths:
-  #           - node_modules
-  #         key: v1-dependencies-{{ checksum "package.json" }}
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
 
-  #     - persist_to_workspace:
-  #         root: ~/repo
-  #         paths: .
+      - persist_to_workspace:
+          root: ~/repo
+          paths: .
   deploy:
     <<: *defaults
     steps:
@@ -55,6 +55,10 @@ workflows:
   version: 2
   test-deploy:
     jobs:
+      - test:
+          filters:
+            tags:
+              only: /^v.*/
       - build
       - deploy:
           requires:
