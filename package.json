@@ -1,10 +1,10 @@
 {
-  "version": "0.1.0",
+  "version": "0.1.1",
   "license": "MIT",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "bin": {
-    "story-generator": "./dist/index.js"
+    "storybook-cli-generator": "./dist/index.js"
   },
   "files": [
     "dist",
@@ -14,10 +14,8 @@
     "node": ">=10"
   },
   "scripts": {
-    "start": "ts-node --esm ./src/index.ts -srcf ./mylib/src/**/*.tsx -tsc ./mylib/tsconfig.json",
+    "start": "ts-node --esm",
     "build": "tsup",
-    "test": "tsdx test",
-    "lint": "tsdx lint",
     "size": "size-limit",
     "analyze": "size-limit --why",
     "doc": "typedoc"
@@ -33,7 +31,7 @@
     "singleQuote": true,
     "trailingComma": "es5"
   },
-  "name": "storybook-generator",
+  "name": "storybook-cli-generator",
   "author": "Boaz Hoch",
   "module": "dist/storybook-generator.esm.js",
   "size-limit": [
