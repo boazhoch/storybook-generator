@@ -1,10 +1,10 @@
 {
-  "version": "0.1.0",
+  "version": "0.1.1",
   "license": "MIT",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "bin": {
-    "story-generator": "./dist/index.js"
+    "storybook-cli-generator": "./dist/index.js"
   },
   "files": [
     "dist",
@@ -33,7 +33,7 @@
     "singleQuote": true,
     "trailingComma": "es5"
   },
-  "name": "storybook-generator",
+  "name": "storybook-cli-generator",
   "author": "Boaz Hoch",
   "module": "dist/storybook-generator.esm.js",
   "size-limit": [
