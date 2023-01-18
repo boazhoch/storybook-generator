@@ -32,6 +32,7 @@ jobs:
   build:
     <<: *defaults
     steps:
+      - checkout
       # - attach_workspace:
       #     at: ~/repo
       - run: sudo npm install --global pnpm
