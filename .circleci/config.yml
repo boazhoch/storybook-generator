@@ -44,5 +44,11 @@ workflows:
           filters:
             tags:
               only: /^v.*/
-      - build
-      - deploy
+      - deploy:
+          requires:
+            - test
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
