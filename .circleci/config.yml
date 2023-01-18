@@ -20,9 +20,10 @@ jobs:
   deploy:
     <<: *defaults
     steps:
+      - checkout
+      
       - attach_workspace:
           at: ~/repo
-      
       - run: sudo npm install --global pnpm
       - run: pnpm install --frozen-lockfile
       - run:
