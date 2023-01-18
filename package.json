@@ -4,17 +4,17 @@
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "bin": {
-    "story-generator": "./dist/index.js"
+    "story-cli-generator": "./dist/index.js"
   },
   "files": [
     "dist",
     "src"
   ],
   "engines": {
-    "node": ">=10"
+    "node": ">=18"
   },
   "scripts": {
-    "start": "ts-node --esm ./src/index.ts -srcf ./mylib/src/**/*.tsx -tsc ./mylib/tsconfig.json",
+    "start": "ts-node --esm",
     "build": "tsup",
     "test": "tsdx test",
     "lint": "tsdx lint",
@@ -33,16 +33,16 @@
     "singleQuote": true,
     "trailingComma": "es5"
   },
-  "name": "storybook-generator",
+  "name": "storybook-cli-generator",
   "author": "Boaz Hoch",
-  "module": "dist/storybook-generator.esm.js",
+  "module": "dist/storybook-cli-generator.esm.js",
   "size-limit": [
     {
-      "path": "dist/storybook-generator.cjs.production.min.js",
+      "path": "dist/storybook-cli-generator.cjs.production.min.js",
       "limit": "10 KB"
     },
     {
-      "path": "dist/storybook-generator.esm.js",
+      "path": "dist/storybook-cli-generator.esm.js",
       "limit": "10 KB"
     }
   ],
