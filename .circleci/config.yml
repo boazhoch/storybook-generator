@@ -16,7 +16,7 @@ jobs:
           - v1-dependencies-{{ checksum "package.json" }}
           - v1-dependencies-
 
-      - run: npm install -g pnpm
+      - run: npm install pnpm
       - run:
           name: Run tests
           command: pnpm run test
@@ -46,7 +46,7 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/repo
-      - run: npm install -g pnpm
+      - run: npm install pnpm
       - run:
           name: Build
           command: pnpm run build
