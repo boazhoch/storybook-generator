@@ -1,34 +1,35 @@
-
-
-
 import { IStoriesBuilderAdapter } from "../usecases/storiesBuilderAdapter";
-import { StoriesBuilderUseCase, StoriesConfigRequestModel } from "../usecases/stories.usecase";
+import {
+  StoriesBuilderUseCase,
+  StoriesConfigRequestModel,
+} from "../usecases/stories.usecase";
 import { inject, injectable } from "inversify";
 import "reflect-metadata";
 
 export interface IStoriesbBuilderController {
-    run(): void;
-    parseConfig(): IStoriesbBuilderController;
+  run(): void;
+  parseConfig(): IStoriesbBuilderController;
 }
-
 
 @injectable()
 export class StoriesBuilderController implements IStoriesbBuilderController {
-    private buildConfig?: StoriesConfigRequestModel;
-    
-    constructor(@inject("adapter") private adapter: IStoriesBuilderAdapter,@inject("StoriesBuilderUseCase") private useCase: StoriesBuilderUseCase) {
-    }
+  private buildConfig?: StoriesConfigRequestModel;
 
-    run() {
-        if (!this.buildConfig) {
-            return;
-        }
-        this.useCase.generateStoriesFromConfig(this.buildConfig);
-    }
+  constructor(
+    @inject("adapter") private adapter: IStoriesBuilderAdapter,
+    @inject("StoriesBuilderUseCase") private useCase: StoriesBuilderUseCase
+  ) {}
 
-    parseConfig() {
-        this.buildConfig = this.adapter.parse();
-
-        return this;
+  run() {
+    if (!this.buildConfig) {
+      return;
     }
+    this.useCase.generateStoriesFromConfig(this.buildConfig);
+  }
+
+  parseConfig() {
+    this.buildConfig = this.adapter.parse();
+
+    return this;
+  }
 }
