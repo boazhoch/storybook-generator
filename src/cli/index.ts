@@ -1,1 +1,1 @@
-export * from "./gateway/cli.gateway"
+export * from "./gateway/cli.gateway";
