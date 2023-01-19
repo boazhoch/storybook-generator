@@ -8,19 +8,32 @@ import { TSAstProjectLoader } from "../../services/ts/ITSAstPrjectLoader";
 import { ComponentStoryFileFactory } from "../../services/ts/IComponentStoryFileFactory";
 import { StoryTemplate } from "../../services/storyTemplateGenerator";
 import { StoriesBuilderPresenter } from "../../interface-adapters/stories.presenter";
+import "reflect-metadata";
+
+import { Container } from "inversify";
 
 
 export class CliGateway {
     controller: StoriesBuilderController;
     constructor() {
-        const cliApdater = new CliAdapter();
-        const ast = new TypescriptAstProjectService(new TSAstProjectLoader(), new ComponentStoryFileFactory(new StoryTemplate()));
-        const useCause = new StoriesUseCase(new StoriesBuilderPresenter(), ast, new FileSystemRepo());
+        const container = new Container();
+        container.bind("adapter").to(CliAdapter);
+        container.bind("ast").to(TypescriptAstProjectService);
+        container.bind("tempalteFileGenerator").to(StoryTemplate);
+        container.bind("loader").to(TSAstProjectLoader);
+        container.bind("componentFactory").to(ComponentStoryFileFactory);
+        container.bind("StoriesUseCase").to(StoriesUseCase);
+        container.bind("presnter").to(StoriesBuilderPresenter);
+        container.bind("repo").to(FileSystemRepo);
+        container.bind("StoriesBuilderUseCase").to(StoriesUseCase);
 
-        this.controller = new StoriesBuilderController(cliApdater, useCause);
+        
+        this.controller = container.resolve(StoriesBuilderController)
+        console.log(this.controller)
     }
     run() {
         this.controller.parseConfig();
         this.controller.run();
     }
 }
+

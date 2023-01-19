@@ -1,6 +1,10 @@
 import fs from 'fs';
-import { IFileSystemRepo, IRespositroy } from '../../usecases/stories.usecase';
-export class FileSystemRepo<T extends { path: string, content: string } = { path: string, content: string }> implements IFileSystemRepo<T> {
+import { injectable } from 'inversify';
+import { IRespositroy } from '../../usecases/stories.usecase';
+import "reflect-metadata";
+
+@injectable()
+export class FileSystemRepo<T extends { path: string, content: string } = { path: string, content: string }> implements IRespositroy<T> {
 
   create(model: T): Promise<T> {
     return new Promise<T>((resolve, reject) => {

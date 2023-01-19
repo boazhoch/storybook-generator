@@ -1,5 +1,7 @@
+import { injectable, inject } from 'inversify';
 import { StoryFileDto } from './../services/ts/IComponentStoryFileFactory';
 import { IAstProjectService } from '../services/ts';
+import "reflect-metadata";
 
 
 export interface StoriesBuilderUseCase {
@@ -29,18 +31,18 @@ export interface IRespositroy<T> {
 
 export interface StoriesReponsePresenter<T extends StoryFileDto = StoryFileDto> extends IPresenter<T> {}
 
-export interface IFileSystemRepo<T extends { path: string, content: string } = { path: string, content: string }> extends IRespositroy<T> {}
-
 interface IPresenter<T> {
   presentAll(param: T[]): void;
   abort(msg?: string): void;
 }
 
-export class StoriesUseCase implements StoriesBuilderUseCase {
+
+@injectable()
+export class StoriesUseCase<T extends {content: string, path: string}> implements StoriesBuilderUseCase {
   constructor(
-    private presnter: StoriesReponsePresenter,
-    private ast: IAstProjectService,
-    private repo: IFileSystemRepo
+    @inject("presnter") private presnter: StoriesReponsePresenter,
+    @inject("ast") private ast: IAstProjectService,
+    @inject("repo") private repo: IRespositroy<T>
   ) {
   }
   async generateStoriesFromConfig(config: StoriesConfigRequestModel) {
@@ -56,7 +58,7 @@ export class StoriesUseCase implements StoriesBuilderUseCase {
     }
     
     const allStoriesResponseModel = storiesFiles.map(async (storyFileDto) => {
-      await this.repo.create({ path: storyFileDto.storyFilePath, content: storyFileDto.template });
+      await this.repo.create({ path: storyFileDto.storyFilePath, content: storyFileDto.template } as T);
 
       return storyFileDto;
     });
