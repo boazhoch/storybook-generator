@@ -1,6 +1,6 @@
 # Welcome
 
-Hi and welcome to this repository, I hope you find this solution a great fit for you, enjoy 🎉 and don't forget to start ⭐
+Hi and welcome to this repository, I hope you find this solution a great fit for you, enjoy 🎉 and don't forget to star ⭐
 
 ## The problem
 
