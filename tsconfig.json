@@ -15,6 +15,8 @@
     "emitDecoratorMetadata": true,
     "types": ["reflect-metadata", "node"]
   },
+  
+  "exclude": ["**/*.stories.tsx"],
 
   "typedocOptions": {
     "entryPoints": ["src/"],

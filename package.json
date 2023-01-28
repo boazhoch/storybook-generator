@@ -18,7 +18,8 @@
     "build": "tsup",
     "size": "size-limit",
     "analyze": "size-limit --why",
-    "doc": "typedoc"
+    "doc": "typedoc",
+    "qa": "ts-node --esm ./src/index.ts -srcf './testlib/src/**/*.tsx' -tsc './testlib/tsconfig.json' -ex './testlib/src/**/*.stories.tsx'"
   },
   "husky": {
     "hooks": {

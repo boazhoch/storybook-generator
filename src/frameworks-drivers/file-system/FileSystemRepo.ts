@@ -1,7 +1,7 @@
 import fs from "fs";
 import { injectable } from "inversify";
-import { IRespositroy } from "../../usecases/stories.usecase";
 import "reflect-metadata";
+import { IRespositroy } from "../../usecases/types";
 
 @injectable()
 export class FileSystemRepo<
@@ -9,10 +9,11 @@ export class FileSystemRepo<
     path: string;
     content: string;
   }
-> implements IRespositroy<T> {
+> implements IRespositroy<T>
+{
   create(model: T): Promise<T> {
     return new Promise<T>((resolve, reject) => {
-      fs.writeFile(model.path, model.content, err => {
+      fs.writeFile(model.path, model.content, (err) => {
         if (err) {
           return reject(err);
         }

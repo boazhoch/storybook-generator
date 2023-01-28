@@ -1,16 +1,8 @@
 import { Command, Option, program as commanderProgram } from "commander";
 
-import { IStoriesBuilderAdapter } from "../../usecases/storiesBuilderAdapter";
-import { StoriesConfigRequestModel } from "../../usecases/stories.usecase";
+import { StoriesInboundPortModel } from "../../usecases/types";
 import { injectable } from "inversify";
 import "reflect-metadata";
-
-interface Options {
-  srcf?: string;
-  tsc?: string;
-  t?: string;
-  ex?: string;
-}
 
 const CLI_OPTIONS = {
   srcComponentsGlob: {
@@ -35,10 +27,14 @@ const CLI_OPTIONS = {
   },
 };
 
+export interface IStoriesBuilderAdapter {
+  parse(): StoriesInboundPortModel;
+}
+
 @injectable()
 export class CliAdapter implements IStoriesBuilderAdapter {
   constructor(private program: Command = commanderProgram) {
-    Object.values(CLI_OPTIONS).forEach(value => {
+    Object.values(CLI_OPTIONS).forEach((value) => {
       if (value.required) {
         this.program.requiredOption(
           `-${value.flag} <string>`,
@@ -52,16 +48,15 @@ export class CliAdapter implements IStoriesBuilderAdapter {
     });
   }
 
-  parse(): StoriesConfigRequestModel {
+  parse(): StoriesInboundPortModel {
     this.program.parse();
     const options = this.program.opts<Options>();
 
     const opts = Object.keys(options).reduce((prevValue, currentValue) => {
       return {
         ...prevValue,
-        [currentValue.toLocaleLowerCase()]: options[
-          currentValue as keyof typeof options
-        ],
+        [currentValue.toLocaleLowerCase()]:
+          options[currentValue as keyof typeof options],
       };
     }, {} as Options);
 
@@ -74,4 +69,11 @@ export class CliAdapter implements IStoriesBuilderAdapter {
       excludedSrcFileGlob: opts[CLI_OPTIONS.excludeFiles.flag as keyof Options],
     };
   }
+}
+
+interface Options {
+  srcf?: string;
+  tsc?: string;
+  t?: string;
+  ex?: string;
 }

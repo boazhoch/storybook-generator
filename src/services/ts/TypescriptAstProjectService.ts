@@ -1,15 +1,13 @@
-import {
-  IComponentStoryFileFactory,
-  StoryFileDto,
-} from "./IComponentStoryFileFactory";
+import { IComponentStoryFileFactory } from "./ComponentStoryFileFactory";
 import { SourceFile } from "ts-morph";
-import { ITSAstProjectLoader } from "./ITSAstPrjectLoader";
-import { StoriesConfigRequestModel } from "../../usecases/stories.usecase";
+import { ITSAstProjectLoader } from "./TSAstProjectLoader";
+
 import "reflect-metadata";
 import { inject, injectable } from "inversify";
+import { StoriesInboundPortModel, StoryFileDto } from "../../usecases/types";
 
 export interface IAstProjectService {
-  loadAstFromConfig(config: StoriesConfigRequestModel): IAstProjectService;
+  loadAstFromConfig(config: StoriesInboundPortModel): IAstProjectService;
   createStories(): StoryFileDto[];
 }
 
@@ -23,7 +21,7 @@ export class TypescriptAstProjectService implements IAstProjectService {
     private componentStoryFileFactory: IComponentStoryFileFactory
   ) {}
 
-  loadAstFromConfig(config: StoriesConfigRequestModel) {
+  loadAstFromConfig(config: StoriesInboundPortModel) {
     this.srcFiles = this.loader.loadAstFromConfig(config);
 
     return this;
@@ -38,7 +36,8 @@ export class TypescriptAstProjectService implements IAstProjectService {
 
   private createStoryFormComponents(srcFiles: SourceFile[]) {
     return srcFiles
-      .map(srcFile => this.componentStoryFileFactory.create(srcFile))
+      .map((srcFile) => this.componentStoryFileFactory.create(srcFile))
+      .flat()
       .filter(Boolean) as StoryFileDto[];
   }
 }

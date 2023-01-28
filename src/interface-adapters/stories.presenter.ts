@@ -1,12 +1,14 @@
+import { IPresenter, StoriesResponseModel } from "./../usecases/types";
 import { injectable } from "inversify";
-import { StoryFileDto } from "./../services/ts/IComponentStoryFileFactory";
-import { StoriesReponsePresenter } from "../usecases/stories.usecase";
+
 import "reflect-metadata";
 
 @injectable()
-export class StoriesBuilderPresenter implements StoriesReponsePresenter {
-  presentAll(models: StoryFileDto[]) {
-    const filesCreated = models.map(storyFile => ({
+export class StoriesBuilderPresenter
+  implements IPresenter<StoriesResponseModel>
+{
+  presentAll(models: StoriesResponseModel[]) {
+    const filesCreated = models.map((storyFile) => ({
       fileName: storyFile.name,
       path: storyFile.srcFilePath,
     }));
@@ -20,5 +22,10 @@ export class StoriesBuilderPresenter implements StoriesReponsePresenter {
       return;
     }
     console.log(`Aborting`);
+  }
+
+  error(err: Error) {
+    console.error(err.message);
+    throw err;
   }
 }

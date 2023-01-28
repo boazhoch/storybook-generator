@@ -1,2 +1,2 @@
 export * from "./cli.adapter";
-export * from "../../usecases/storiesBuilderAdapter";
+export * from "../../usecases/types";
