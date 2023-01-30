@@ -19,7 +19,7 @@
     "size": "size-limit",
     "analyze": "size-limit --why",
     "doc": "typedoc",
-    "qa": "ts-node --esm ./src/index.ts -srcf './testlib/src/**/*.tsx' -tsc './testlib/tsconfig.json' -ex './testlib/src/**/*.stories.tsx'"
+    "qa": "ts-node --esm ./src/index.ts -srcf './testlib/src/**/*.tsx' -ex './testlib/src/**/*.stories.tsx' -t './index.js'"
   },
   "husky": {
     "hooks": {
@@ -49,6 +49,7 @@
     "@size-limit/preset-small-lib": "^8.1.0",
     "@tsconfig/node16": "^1.0.3",
     "@tsconfig/recommended": "^1.0.1",
+    "@types/lodash": "^4.14.191",
     "@types/node": "^18.11.18",
     "@types/uuid": "^9.0.0",
     "@typescript-eslint/eslint-plugin": "^5.0.0",
@@ -70,6 +71,8 @@
   "dependencies": {
     "commander": "^9.5.0",
     "inversify": "5.0.5",
+    "lodash": "^4.17.21",
+    "pino": "^8.8.0",
     "reflect-metadata": "^0.1.13",
     "ts-morph": "^17.0.1",
     "uuid": "^9.0.0"

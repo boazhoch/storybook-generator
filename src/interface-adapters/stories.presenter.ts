@@ -1,31 +1,35 @@
-import { IPresenter, StoriesResponseModel } from "./../usecases/types";
-import { injectable } from "inversify";
+import { IPresenter, OutputPortModel } from "../app/types";
+import { inject, injectable } from "inversify";
 
 import "reflect-metadata";
+import { Logger, LoggerOptions, DestinationStream } from "pino";
+import { TYPES } from "../types";
 
 @injectable()
-export class StoriesBuilderPresenter
-  implements IPresenter<StoriesResponseModel>
-{
-  presentAll(models: StoriesResponseModel[]) {
+export class StoriesPresenter implements IPresenter<OutputPortModel> {
+  constructor(
+    @inject(TYPES.ILogger)
+    private logger: Logger<LoggerOptions | DestinationStream>
+  ) {}
+  presentAll(models: OutputPortModel[]) {
     const filesCreated = models.map((storyFile) => ({
       fileName: storyFile.name,
       path: storyFile.srcFilePath,
     }));
 
-    console.log(filesCreated);
+    this.logger.info(filesCreated);
   }
 
   abort(msg?: string): void {
     if (msg) {
-      console.log(`Aborting due to ${msg}`);
+      this.logger.warn(`Aborting due to ${msg}`);
       return;
     }
-    console.log(`Aborting`);
+    this.logger.warn(`Aborting`);
   }
 
   error(err: Error) {
-    console.error(err.message);
+    this.logger.error(err.message);
     throw err;
   }
 }

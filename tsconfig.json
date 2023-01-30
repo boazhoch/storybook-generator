@@ -13,13 +13,14 @@
     "moduleResolution": "node",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "types": ["reflect-metadata", "node"]
+    "types": ["reflect-metadata", "node"],
+    "resolveJsonModule": true
   },
   
-  "exclude": ["**/*.stories.tsx"],
+  "exclude": ["testlib/"],
 
   "typedocOptions": {
-    "entryPoints": ["src/"],
+    "entryPoints": ["src"],
     "out": "docs",
     "entryPointStrategy": "expand"
   }

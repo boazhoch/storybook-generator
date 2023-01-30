@@ -1,4 +1,6 @@
 #!/usr/bin/env node
-import { CliGateway } from "./cli";
+import { init } from "./di";
 
-new CliGateway().run();
+init();
+
+export { init };
