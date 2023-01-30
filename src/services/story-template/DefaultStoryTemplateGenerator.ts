@@ -1,25 +1,23 @@
 import { StoriesResponseModelWithTemplate } from "./index";
 
 class DefaultStoryTemplateGenerator {
-  public generate(storyFileDto: StoriesResponseModelWithTemplate) {
+  public generate = (storyFileDto: StoriesResponseModelWithTemplate) => {
     return this.defaultTemplateGenerator(storyFileDto);
-  }
+  };
 
   private defaultTemplateGenerator(
     storyFileDto: StoriesResponseModelWithTemplate
   ) {
     return `${this.constructImportStatementForAll(storyFileDto)}
-
-    export default {
-    /* 👇 The title prop is optional.
-    * See https://storybook.js.org/docs/react/configure/overview#configure-story-loading
-    * to learn how to generate automatic titles
-    */
-    component: ${this.getComponentStory(storyFileDto)},
-    ${this.additionalStoryProperties(storyFileDto)}
-    }
-
-    ${this.constructExportStatement(storyFileDto).join(";")}`;
+export default {
+  /* 👇 The title prop is optional.
+  * See https://storybook.js.org/docs/react/configure/overview#configure-story-loading
+  * to learn how to generate automatic titles
+  */
+  component: ${this.getComponentStory(storyFileDto)},
+  ${this.additionalStoryProperties(storyFileDto)}
+}
+${this.constructExportStatement(storyFileDto).join(";\n")}`;
   }
   private additionalStoryProperties(
     storyFileDto: StoriesResponseModelWithTemplate
@@ -52,9 +50,13 @@ class DefaultStoryTemplateGenerator {
   private constructImportStatementForAll(
     StoryFileDto: StoriesResponseModelWithTemplate
   ) {
-    return `import ${this.constructDefaultImportStatement(
+    const defaultImport = this.constructDefaultImportStatement(
       StoryFileDto.exportStatements
-    )}, {${this.constructImportStatement(
+    );
+
+    return `import ${
+      defaultImport ? defaultImport + "," : ""
+    } {${this.constructImportStatement(
       StoryFileDto.exportStatements
     )}} from "./${StoryFileDto.name.replace(".tsx", "")}"`;
   }

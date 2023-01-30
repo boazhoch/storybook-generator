@@ -19,7 +19,8 @@
     "size": "size-limit",
     "analyze": "size-limit --why",
     "doc": "typedoc",
-    "qa": "ts-node --esm ./src/index.ts -srcf './testlib/src/**/*.tsx' -ex './testlib/src/**/*.stories.tsx' -t './index.js'"
+    "qa": "ts-node --esm ./src/index.ts -srcf './testlib/src/**/*.tsx' -ex './testlib/src/**/*.stories.tsx'",
+    "qa2": "ts-node --esm ./src/index.ts -tsc './testlib/tsconfig.json'"
   },
   "husky": {
     "hooks": {
