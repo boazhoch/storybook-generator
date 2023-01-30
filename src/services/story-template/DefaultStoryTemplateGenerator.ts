@@ -32,9 +32,9 @@ ${this.constructExportStatement(storyFileDto).join(";\n")}`;
 
     const startNumber = defaultIndex !== -1 ? defaultIndex : 1;
 
-    const exports = storyFileDto.exportStatements
-      .slice()
-      .splice(startNumber, 1);
+    const exports = storyFileDto.exportStatements.slice();
+
+    exports.splice(startNumber, 1);
 
     return `subcomponents: { ${exports
       .map((ex) => ex.exportStatement)
