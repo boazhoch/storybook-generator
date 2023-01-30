@@ -1,6 +1,13 @@
 # Welcome
 
-Hi and welcome to this repository, I hope you find this solution a great fit for you, enjoy 🎉 and don't forget to start ⭐
+Hi and welcome to this repository, I hope you find this solution a great fit for you, enjoy 🎉 and don't forget to star ⭐
+
+## TLDR
+
+How to use
+
+- for help: `npx story-cli-generator --help`
+- Example: `npx story-cli-generator -srcf './testlib/src/**/*.tsx' -ex './testlib/src/**/*.stories.tsx'`
 
 ## TLDR
 
