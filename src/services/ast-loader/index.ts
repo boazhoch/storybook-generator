@@ -30,7 +30,7 @@ export class TSAstProjectLoader implements ITSAstProjectLoader {
       this.logger.info(
         "Detected tsConfig file path, loading files from tsConfig"
       );
-      this.prj.addSourceFilesFromTsConfig(config.tsconfigFilePath);
+      return this.prj.addSourceFilesFromTsConfig(config.tsconfigFilePath);
     }
 
     this.logger.info(
@@ -43,6 +43,6 @@ export class TSAstProjectLoader implements ITSAstProjectLoader {
     return [
       config.componentsSrcFilePath,
       config.excludedSrcFileGlob ? `!${config.excludedSrcFileGlob}` : "",
-    ];
+    ].filter(Boolean);
   }
 }

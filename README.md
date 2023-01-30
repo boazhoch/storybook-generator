@@ -9,6 +9,13 @@ How to use
 - for help: `npx story-cli-generator --help`
 - Example: `npx story-cli-generator -srcf './testlib/src/**/*.tsx' -ex './testlib/src/**/*.stories.tsx'`
 
+## TLDR
+
+How to use
+
+- for help: `npx story-cli-generator --help`
+- Example: `npx story-cli-generator -srcf './testlib/src/**/*.tsx' -ex './testlib/src/**/*.stories.tsx'`
+
 ## The problem
 
 This repository was made as a solution to a problem I encounted in previous companies I had work with.
