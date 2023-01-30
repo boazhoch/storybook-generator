@@ -1,7 +1,7 @@
 import fs from "fs";
 import { injectable } from "inversify";
 import "reflect-metadata";
-import { IRespositroy } from "../../usecases/types";
+import { IRespositroy } from "../../app/types";
 
 @injectable()
 export class FileSystemRepo<

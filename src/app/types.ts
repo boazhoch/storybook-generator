@@ -1,25 +1,27 @@
+import { StoriesResponseModelWithTemplate } from "../services/story-template";
+
 export interface IStoriesUseCase {
-  generateStoriesFromConfig(config: StoriesInboundPortModel): void;
+  generateStoriesFromConfig(config: InputPortModel): void;
 }
 
-export interface StoriesInboundPortModel {
+export interface InputPortModel {
   tsconfigFilePath: string;
   componentsSrcFilePath: string;
   excludedSrcFileGlob?: string;
-  template: string;
+  template?: (storyFileDto: StoriesResponseModelWithTemplate) => string;
 }
 
-export interface ExportStatement {
-  exportStatement: string;
-  isDefault?: boolean;
-}
-
-export interface StoriesResponseModel {
+export interface OutputPortModel {
   name: string;
   srcFilePath: string;
   exportStatements: Array<ExportStatement>;
   template: string;
   storyFilePath: string;
+}
+
+export interface ExportStatement {
+  exportStatement: string;
+  isDefault?: boolean;
 }
 
 export interface IRespositroy<T> {
@@ -30,7 +32,6 @@ export interface IRespositroy<T> {
 export interface IPresenter<T> {
   presentAll(param: T[]): void;
   abort(msg?: string): void;
-
   error(err: Error): void;
 }
 

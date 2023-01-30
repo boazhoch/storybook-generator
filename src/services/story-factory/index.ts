@@ -1,14 +1,10 @@
 import { inject, injectable } from "inversify";
-import {
-  ExportedDeclarations,
-  SourceFile,
-  Node,
-  SyntaxKind,
-  ExportDeclaration,
-} from "ts-morph";
-import { IStoryTemplateGenerator } from "../storyTemplateGenerator";
+import { ExportedDeclarations, SourceFile, Node, SyntaxKind } from "ts-morph";
+import { IStoryTemplateGenerator } from "../story-template";
 import "reflect-metadata";
-import { StoryFileDto } from "../../usecases/types";
+import { StoryFileDto } from "../../app/types";
+import { TYPES } from "../../types";
+import { Logger, LoggerOptions, DestinationStream } from "pino";
 
 export interface IComponentStoryFileFactory {
   create(srcFile: SourceFile): StoryFileDto | undefined;
@@ -17,15 +13,17 @@ export interface IComponentStoryFileFactory {
 @injectable()
 export class ComponentStoryFileFactory implements IComponentStoryFileFactory {
   constructor(
-    @inject("tempalteFileGenerator")
-    private tempalteFileGenerator: IStoryTemplateGenerator
+    @inject(TYPES.IStoryTemplateGenerator)
+    private tempalteFileGenerator: IStoryTemplateGenerator,
+    @inject(TYPES.ILogger)
+    private logger: Logger<LoggerOptions | DestinationStream>
   ) {}
 
   create(srcFile: SourceFile) {
     const exports = srcFile.getExportedDeclarations();
 
     if (exports.size === 0) {
-      console.warn(
+      this.logger.warn(
         `File has no exported declarations, file name is: ${srcFile.getBaseName()}`
       );
       return;

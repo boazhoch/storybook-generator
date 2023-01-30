@@ -1,46 +1,25 @@
-import { inject, injectable, optional } from "inversify";
+import { StoriesResponseModelWithTemplate } from "./index";
 
-import "reflect-metadata";
-import { StoriesResponseModel } from "../usecases/types";
-
-interface StoriesResponseModelWithTemplate
-  extends Omit<StoriesResponseModel, "template"> {}
-
-export interface IStoryTemplateGenerator {
-  generate(storyFileDto: StoriesResponseModelWithTemplate): string;
-}
-
-@injectable()
-export class StoryTemplate implements IStoryTemplateGenerator {
-  /**
-   *
-   */
-  constructor(
-    @inject("template")
-    @optional()
-    private templatebuilder?: (
-      storyFileDto: StoriesResponseModelWithTemplate
-    ) => string
-  ) {}
-
+class DefaultStoryTemplateGenerator {
   public generate(storyFileDto: StoriesResponseModelWithTemplate) {
-    return (
-      this.templatebuilder?.(storyFileDto) ||
-      ` 
-      ${this.constructImportStatementForAll(storyFileDto)}
+    return this.defaultTemplateGenerator(storyFileDto);
+  }
 
-      export default {
-      /* 👇 The title prop is optional.
-      * See https://storybook.js.org/docs/react/configure/overview#configure-story-loading
-      * to learn how to generate automatic titles
-      */
-      component: ${this.getComponentStory(storyFileDto)},
-      ${this.additionalStoryProperties(storyFileDto)}
-      }
+  private defaultTemplateGenerator(
+    storyFileDto: StoriesResponseModelWithTemplate
+  ) {
+    return `${this.constructImportStatementForAll(storyFileDto)}
 
-      ${this.constructExportStatement(storyFileDto).join(";")}
-    `
-    );
+    export default {
+    /* 👇 The title prop is optional.
+    * See https://storybook.js.org/docs/react/configure/overview#configure-story-loading
+    * to learn how to generate automatic titles
+    */
+    component: ${this.getComponentStory(storyFileDto)},
+    ${this.additionalStoryProperties(storyFileDto)}
+    }
+
+    ${this.constructExportStatement(storyFileDto).join(";")}`;
   }
   private additionalStoryProperties(
     storyFileDto: StoriesResponseModelWithTemplate
@@ -105,3 +84,5 @@ export class StoryTemplate implements IStoryTemplateGenerator {
     );
   }
 }
+
+export { DefaultStoryTemplateGenerator };

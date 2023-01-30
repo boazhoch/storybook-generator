@@ -1,13 +1,14 @@
-import { IComponentStoryFileFactory } from "./ComponentStoryFileFactory";
+import { IComponentStoryFileFactory } from "../story-factory";
 import { SourceFile } from "ts-morph";
-import { ITSAstProjectLoader } from "./TSAstProjectLoader";
+import { ITSAstProjectLoader } from "../ast-loader";
 
 import "reflect-metadata";
 import { inject, injectable } from "inversify";
-import { StoriesInboundPortModel, StoryFileDto } from "../../usecases/types";
+import { InputPortModel, StoryFileDto } from "../../app/types";
+import { TYPES } from "../../types";
 
 export interface IAstProjectService {
-  loadAstFromConfig(config: StoriesInboundPortModel): IAstProjectService;
+  loadAstFromConfig(config: InputPortModel): IAstProjectService;
   createStories(): StoryFileDto[];
 }
 
@@ -16,13 +17,13 @@ export class TypescriptAstProjectService implements IAstProjectService {
   private srcFiles?: SourceFile[];
 
   constructor(
-    @inject("loader") private loader: ITSAstProjectLoader,
-    @inject("componentFactory")
+    @inject(TYPES.ITSAstProjectLoader) private loader: ITSAstProjectLoader,
+    @inject(TYPES.IComponentStoryFileFactory)
     private componentStoryFileFactory: IComponentStoryFileFactory
   ) {}
 
-  loadAstFromConfig(config: StoriesInboundPortModel) {
-    this.srcFiles = this.loader.loadAstFromConfig(config);
+  loadAstFromConfig(config: InputPortModel) {
+    this.srcFiles = this.loader.getSourceFiles(config);
 
     return this;
   }

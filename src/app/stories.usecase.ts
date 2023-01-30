@@ -1,30 +1,36 @@
 import { injectable, inject } from "inversify";
-import { IAstProjectService } from "../services/ts/TypescriptAstProjectService";
+import { IAstProjectService } from "../services/ast";
 import "reflect-metadata";
 
 import {
   IStoriesUseCase,
   IPresenter,
   IRespositroy,
-  StoriesInboundPortModel,
+  InputPortModel,
   StoryFileDto,
 } from "./types";
+import { TYPES } from "../types";
+import { DestinationStream, Logger, LoggerOptions } from "pino";
 
 @injectable()
 export class StoriesUseCase implements IStoriesUseCase {
   constructor(
-    @inject("IPresenter<StoriesResponseModel>")
+    @inject(TYPES["IPresenter<StoriesResponseModel>"])
     private presnter: IPresenter<StoryFileDto>,
-    @inject("IAstProjectService") private ast: IAstProjectService,
-    @inject("IRespositroy<{ content: string; path: string }>")
+    @inject(TYPES.ILogger)
+    private logger: Logger<LoggerOptions | DestinationStream>,
+    @inject(TYPES.IAstProjectService) private ast: IAstProjectService,
+    @inject(TYPES["IRespositroy<{ content: string; path: string }>"])
     private repo: IRespositroy<{ content: string; path: string }>
   ) {}
-  async generateStoriesFromConfig(config: StoriesInboundPortModel) {
+  async generateStoriesFromConfig(config: InputPortModel) {
     const storyFilesToGenerate = this.filterExistingStoryFiles(
       this.ast.loadAstFromConfig(config).createStories()
     );
 
-    console.log(`Number of stories to create: ${storyFilesToGenerate.length}`);
+    this.logger.info(
+      `Number of stories to create: ${storyFilesToGenerate.length}`
+    );
 
     if (!storyFilesToGenerate.length) {
       return this.presnter.abort("no stories to be created");
@@ -39,11 +45,11 @@ export class StoriesUseCase implements IStoriesUseCase {
   }
 
   private filterExistingStoryFiles(stories: StoryFileDto[]) {
-    console.log("Filtering files that already exist");
+    this.logger.info("Filtering files that already exist");
     return stories.filter((storyFile) => {
       const isExist = this.repo.exist(storyFile.storyFilePath);
       if (isExist) {
-        console.log(
+        this.logger.info(
           `Filterting ${storyFile.name} file out since a story file already exist`
         );
       }
